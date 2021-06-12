@@ -19,8 +19,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# TODO: Use linux-tkg instead of linux-zen (maybe)
-
 PRIM_DISK=$(df -h / | grep dev | awk '{ print $1 }')
 SETUP_LOG="/opt/simple-desktop/logs/setup.log"
 SETUP_ERR_LOG="/opt/simple-desktop/logs/setup_err.log"
@@ -195,6 +193,23 @@ install() {
 
       # TODO: Check installation paths in arch
 
+      # Create a better system monitor desktop icon
+      cat << 'EOF' >/usr/share/applications/sysmonitor.desktop
+      [Desktop Entry]
+      Version=1.0
+      Name=System Monitor
+      Type=Application
+      Comment=View System Performance
+      Terminal=true
+      Exec=btm -g --hide_time --hide_table_gap
+      Icon=org.gnome.SystemMonitor
+      Categories=ConsoleOnly;System;Monitor;Task;
+      GenericName=Process Viewer
+      Keywords=Monitor;System;Process;CPU;Memory;Network;History;Usage;Performance;Task;Manager;Activity;
+EOF
+
+      # Install a better default zsh PS1 TODO: (.zshrc might not exist by default in arch)
+      cp "$HOME"/.zshrc /opt/simple-desktop-arch/backup_confs
       ;;
   esac
 }
