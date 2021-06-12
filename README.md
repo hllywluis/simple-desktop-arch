@@ -1,4 +1,6 @@
-# simple-desktop
+# simple-desktop-arch
+
+An attempt to adapt simple-desktop from focusing on an Ubuntu-centric approach to also support Arch.
 
 simple-desktop provides an opinionated, performant, and responsive experience to daily-users and developers on the Ubuntu 20+ desktop.
 
