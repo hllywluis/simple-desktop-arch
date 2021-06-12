@@ -33,7 +33,7 @@ is_root() {
 
 # Create GitHub issue submission by gathering basic system information. systemd, dmesg, journalctl, mokutil logs, etc.
 system_info() {
-  command -v inxi 1>/dev/null && inxi -Fxz || echo "Install inxi:  pacman -S inxi" # TODO: might be wrong
+  command -v inxi 1>/dev/null && inxi -Fxz || echo "Install inxi:  yay -S inxi" # TODO: need to add confirmation skip here
   echo -e "\033[1mSystemD:  \033[0m $(systemctl --failed --no-pager | grep -v UNIT)"
   echo -e "\033[1mDmesg:    \033[0m \n$(dmesg -tP --level=err,emerg,crit,alert | sed 's/^/           /')"
   echo -e "\033[1mJournal:  \033[0m \n$(journalctl -p "emerg..err" --no-pager -b | grep -v 'kernel\|Logs\|ssh' | sed 's/^/           /')"
