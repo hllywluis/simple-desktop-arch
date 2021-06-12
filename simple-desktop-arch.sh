@@ -64,10 +64,12 @@ update() {
 
 # TODO: Add a function to check if yay is installed and if not, install yay.
 
-# TODO: Add a function to install gnome-desktop and gdm here.
+# TODO: Add a function to install the gnome package group and allow users to choose if they want gnome-extra.
 
 # Install common desktop apps (mostly using a combination of pacman and yay)
 # TODO: For snap-specific packages, we need to make a method to check for and install snapd on arch
+
+# TODO: Install plymouth, configure silent boot, configure wayland (add option for xorg too?)
 install() {
   case $1 in
     slack)
