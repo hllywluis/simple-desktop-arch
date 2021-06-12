@@ -19,6 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# TODO: Use linux-tkg instead of linux-zen (maybe)
+
 PRIM_DISK=$(df -h / | grep dev | awk '{ print $1 }')
 SETUP_LOG="/opt/simple-desktop/logs/setup.log"
 SETUP_ERR_LOG="/opt/simple-desktop/logs/setup_err.log"
@@ -119,7 +121,78 @@ install() {
 
     anbox)
       pacman -Syu
-      pacman -S android-tools-adb wget curl lzip tar unzip squashfs-tools --noconfirm
+      pacman -S android-tools wget curl lzip tar unzip squashfs-tools --noconfirm
+      # TODO: Use yay to install anbox-git
+      ;;
+
+    developer)
+      # TODO: Use pacman to install base-devel (depends on what packages base-devel contains)
+
+      ZSH="$(command -v zsh || grep zsh /etc/shells | tail -n 1)" # TODO: zsh might not be installed by default
+      sed -i "s|/bin/bash|$ZSH|g" /etc/passwd
+
+      # Create a temp install directory
+      TEMPDIR="$HOME/.tmp-sd-a"
+      mkdir -p "$TEMPDIR"
+      cd "$TEMPDIR" || echo "Can\'t make temp dir." >& 2
+
+      # Install a better top/htop
+      wget -c https://github.com/ClementTsang/bottom/releases/latest/download/bottom_x86_64-unknown-linux-gnu.tar.gz
+      tar -zxvf bottom_x86_64-unkown-linux-gnu.tar.gz
+      cp -f ./btm /usr/bin
+
+      # Install a better ls
+      wget -c https://github.com/Peltoche/lsd/releases/download/0.20.1/lsd-0.20.1-x86_64-unknown-linux-gnu.tar.gz
+      tar -zxvf lsd-0.20.1-x86_64-unkown-linux-gnu.tar.gz
+      cp -f /.lsd-*-x86_64-unkown-linux-gnu/lsd /usr/bin
+
+      # Install a colorful cat
+      wget -c https://github.com/sharkdp/bat/releases/download/v0.18.0/bat-v0.18.0-x86_64-unknown-linux-gnu.tar.gz
+      tar -zxvf -zxvf bat-v0.18.0-x86_64-unknown-linux-gnu.tar.gz
+      cp -f ./bat-v0.18.0-x86_64-unknown-linux-gnu/bat /usr/bin/
+
+      # Install lazydocker
+      wget -c https://github.com/jesseduffield/lazydocker/releases/download/v0.12/lazydocker_0.12_Linux_x86_64.tar.gz
+      tar -zxvf ./lazydocker_0.12_Linux_x86_64.tar.gz
+      chmod -f 0755 ./lazydocker
+      cp -f ./lazydocker /usr/bin/
+
+      # Install a better colorful diff
+      wget -c https://github.com/dandavison/delta/releases/download/0.7.1/delta-0.7.1-x86_64-unknown-linux-gnu.tar.gz
+      tar -zxvf ./delta-0.7.1-x86_64-unknown-linux-gnu.tar.gz
+      cp -f ./delta-0.7.1-x86_64-unknown-linux-gnu/delta /usr/bin/
+
+      # Install procs a colorful ps
+      wget -c https://github.com/dalance/procs/releases/download/v0.11.4/procs-v0.11.4-x86_64-lnx.zip
+      unzip procs-v0.11.4-x86_64-lnx.zip
+      cp -f ./procs /usr/bin/
+
+      # Install network utilization CLI bandwich
+      wget -c https://github.com/imsnif/bandwhich/releases/download/0.20.0/bandwhich-v0.20.0-x86_64-unknown-linux-musl.tar.gz
+      tar -zxvf ./bandwhich-v0.20.0-x86_64-unknown-linux-musl.tar.gz
+      cp -f ./bandwhich /usr/bin/
+
+      # Install git credential helper
+      make --directory=/usr/share/doc/git/contrib/credential/libsecret
+      git config --global credential.helper /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+
+      # Install better vim defaults
+      git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
+      sh ~/.vim_runtime/install_awesome_vimrc.sh
+
+      # Install oh-my-zsh
+      git clone --depth=1 git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+      chsh -s "$ZSH" && "$ZSH" -i -c "omz update"
+
+      # Install powerlevel10k and oh-my-zsh plugins
+      git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME"/.oh-my-zsh/custom/themes/powerlevel10k
+      git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+      git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+      rm -rf "$TEMPDIR"
+
+      # TODO: Check installation paths in arch
+
       ;;
   esac
 }
