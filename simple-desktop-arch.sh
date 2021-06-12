@@ -1,9 +1,10 @@
 #!/bin/bash
 #
-# simple-desktop
-# Opinionated, performant, and responsive experience to daily-users and developers on the Ubuntu 20+ desktop
+# simple-desktop-arch
+# Adapting the opinionated, performant, and responsive experience to daily-users and developers to Arch
 #
 # Copyright (C) 2021  Perlogix, Timothy Marcinowski
+# With contributions from: Luis Bauza.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
