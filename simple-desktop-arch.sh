@@ -55,37 +55,41 @@ update() {
       mv -f hosts /etc
       ;;
     *)
-      echo "options: slack,discord,chrome,firefox,spotify,zoom,teams,overclock,developer,theme,docker,flatpak,cleanup_script,disable_spectre"
+      echo "options: slack,discord,brave,firefox,spotify,zoom,teams,overclock,developer,theme,docker,flatpak,cleanup_script,disable_spectre"
       ;;
   esac
 }
+
+# TODO: Add a function to check if yay is installed and if not, install yay.
+
+# TODO: Add a function to install gnome-desktop and gdm here.
 
 # Install common desktop apps (mostly using a combination of pacman and yay)
 # TODO: For snap-specific packages, we need to make a method to check for and install snapd on arch
 install() {
   case $1 in
     slack)
-      snap install slack --classic # TODO: Change this to use yay later.
+      yay -S slack-desktop # TODO: Add verification skip to this and all other yay commands.
       ;;
 
-    chrome)
-      # TODO: Not sure if this will use Brave or Chrome?
+    brave)
+      yay -S brave
       ;;
 
     spotify)
-      # TODO: Use yay here.
+      yay -S spotify
       ;;
 
     zoom)
-      # TODO: Use yay again.
+      yay -S zoom
       ;;
 
-    team)
-      # TODO: Oh look, more yay!
+    teams)
+      yay -S teams
       ;;
 
     discord)
-      # TODO: Did someone say yay again?
+      pacman -S discord --noconfirm
       ;;
 
     firefox)
