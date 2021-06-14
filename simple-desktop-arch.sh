@@ -60,17 +60,15 @@ update() {
   esac
 }
 
-# TODO: Add a function to check if yay is installed and if not, install yay.
+# TODO: Check if this function is valid in Manjaro.
 check_yay() {
+  CURRENT_USER=$(who am i | awk '{print $1}')
+
   if [ ! -e /usr/local/bin/yay ]; then
     if [ -e /usr/local/bin/git ]; then
       cd /opt || mkdir /opt && cd /opt || exit
       git clone https://aur.archlinux.org/yay.git
-      su -c nobody
-      chown -R nobody:nobody ./yay
-      cd yay || exit && exit
-      makepkg -si
-      exit
+      su "$CURRENT_USER" -c chown -R "$CURRENT_USER":"$CURRENT_USER" ./yay && cd yay && makepkg -si && exit
     else
         pacman -S git
         check_yay
