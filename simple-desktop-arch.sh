@@ -77,9 +77,6 @@ check_yay() {
     fi
   fi
 }
-
-# TODO: Add a function to install the gnome package group and allow users to choose if they want gnome-extra.
-
 # Install common desktop apps (mostly using a combination of pacman and yay)
 # TODO: For snap-specific packages, we need to make a method to check for and install snapd on manjaro
 
@@ -142,8 +139,6 @@ install() {
       ;;
 
     developer)
-      # TODO: Use pacman to install base-devel (depends on what packages base-devel contains)
-
       ZSH="$(command -v zsh || grep zsh /etc/shells | tail -n 1)" # TODO: zsh might not be installed by default
       sed -i "s|/bin/bash|$ZSH|g" /etc/passwd
 
