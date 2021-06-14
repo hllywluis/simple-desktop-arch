@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# simple-desktop-arch
-# Adapting the opinionated, performant, and responsive experience to daily-users and developers to Arch
+# simple-desktop-manjaro
+# Adapting the opinionated, performant, and responsive experience to daily-users and developers to Manjaro
 #
 # Copyright (C) 2021  Perlogix, Timothy Marcinowski
 # With contributions from: Luis Bauza.
@@ -61,11 +61,27 @@ update() {
 }
 
 # TODO: Add a function to check if yay is installed and if not, install yay.
+check_yay() {
+  if [ ! -e /usr/local/bin/yay ]; then
+    if [ -e /usr/local/bin/git ]; then
+      cd /opt || mkdir /opt && cd /opt || exit
+      git clone https://aur.archlinux.org/yay.git
+      su -c nobody
+      chown -R nobody:nobody ./yay
+      cd yay || exit && exit
+      makepkg -si
+      exit
+    else
+        pacman -S git
+        check_yay
+    fi
+  fi
+}
 
 # TODO: Add a function to install the gnome package group and allow users to choose if they want gnome-extra.
 
 # Install common desktop apps (mostly using a combination of pacman and yay)
-# TODO: For snap-specific packages, we need to make a method to check for and install snapd on arch
+# TODO: For snap-specific packages, we need to make a method to check for and install snapd on manjaro
 
 # TODO: Install plymouth, configure silent boot, configure wayland (add option for xorg too?)
 install() {
@@ -191,7 +207,7 @@ install() {
 
       rm -rf "$TEMPDIR"
 
-      # TODO: Check installation paths in arch
+      # TODO: Check installation paths in manjaro
 
       # Create a better system monitor desktop icon
       cat << 'EOF' >/usr/share/applications/sysmonitor.desktop
@@ -208,8 +224,8 @@ install() {
       Keywords=Monitor;System;Process;CPU;Memory;Network;History;Usage;Performance;Task;Manager;Activity;
 EOF
 
-      # Install a better default zsh PS1 TODO: (.zshrc might not exist by default in arch)
-      cp "$HOME"/.zshrc /opt/simple-desktop-arch/backup_confs
+      # Install a better default zsh PS1 TODO: (.zshrc might not exist by default in manjaro)
+      cp "$HOME"/.zshrc /opt/simple-desktop-manjaro/backup_confs
       ;;
   esac
 }
